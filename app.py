@@ -6,7 +6,7 @@ import pandas as pd
 import charts as charts
 import streamlit as st
 import metrics as m
-from formatting import display_table, export_table
+from formatting import display_table, export_table, spanish
 from ui import icon, metric_cards, CHART_ICONS
 
 st.set_page_config(page_title='EPH | Análisis socioeconómico',page_icon='📊',layout='wide')
@@ -85,9 +85,6 @@ history=m.select(p,None,regions,cities,sexes)
 if pt.empty or ht.empty:
     st.info('No hay observaciones para esta selección. Ajustá los filtros.');st.stop()
 
-def metric_grid(values):
-    st.markdown(metric_cards(values, price_base),unsafe_allow_html=True)
-
 # Las figuras se construyen en charts.py, compartido con exploracion_eph.py.
 view_name='Panorama' if section=='Panorama' else page
 if page==PAGES[0] and unit=='Hogares' and sexes:
@@ -95,9 +92,35 @@ if page==PAGES[0] and unit=='Hogares' and sexes:
 if page==PAGES[6] and not sectors:
     st.info('Seleccioná al menos un sector para comparar.');st.stop()
 
-values=charts.cards(view_name,pt,ht,ref,period)
+values = charts.card_values(view_name,pt,ht,ref,period)
+comparisons = {}
+previous_period = f'{int(period[:4])-1}{period[4:]}'
+if view_name == 'Panorama' and previous_period in periods:
+    previous_people = m.select(history,previous_period)
+    previous_households = m.select(h,previous_period,regions,cities)
+    previous_values = {
+        label: value for label,value,_ in
+        charts.card_values(view_name,previous_people,previous_households,ref,previous_period)
+    }
+    compared = {'Actividad', 'Ingreso laboral · asalariados con ingresos'}
+    for label,value,unit_name in values:
+        before = previous_values.get(label)
+        if label not in compared or pd.isna(value) or pd.isna(before):
+            continue
+        if unit_name == 'rate':
+            change = round(round(value,1)-round(before,1),1)
+            suffix = ' p.p.'
+        elif before > 0:
+            change = round(100*(value/before-1),1)
+            suffix = ' % real'
+        else:
+            continue
+        sign = '+' if change > 0 else '−' if change < 0 else ''
+        comparisons[label] = f'{sign}{spanish(abs(change),1)}{suffix} vs. {previous_period[-2:]} {previous_period[:4]}'
 
-if values: metric_grid(values)
+if values:
+    formatted = [(label,charts.format_card(value,unit_name)) for label,value,unit_name in values]
+    st.markdown(metric_cards(formatted,price_base,comparisons),unsafe_allow_html=True)
 if view_name in ['Panorama',PAGES[5]]:
     income_context = f'Ingresos a precios de {price_base} · IPCF medio entre hogares.'
     if sexes: income_context+=' El filtro de sexo no se aplica a hogares.'

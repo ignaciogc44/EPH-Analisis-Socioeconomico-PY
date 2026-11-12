@@ -32,9 +32,12 @@ METRICS = {
 
 CHART_ICONS = {'labor_history':'chart','overview_services':'house','dwelling':'house','tenure':'house','housing':'pin','education':'education','secondary':'education','status_sex':'people','inactivity':'people','occupation':'briefcase','sectors':'building','deciles':'wallet','income_education':'education','income_history':'chart','population':'people'}
 
-def metric_cards(values, price_base):
+def metric_cards(values, price_base, comparisons=None):
+    comparisons = comparisons or {}
     cards=[]
     for label,value in values:
         title,glyph,context=METRICS.get(label,(label,'chart',''))
-        cards.append('<div class="eph-metric"><div class="eph-metric-top"><span class="eph-metric-icon">'+icon(glyph)+'</span><span class="eph-metric-label">'+html.escape(title)+'</span></div><div class="eph-metric-value">'+html.escape(str(value))+'</div><div class="eph-metric-context">'+html.escape(context.format(price_base=price_base))+'</div></div>')
+        delta = comparisons.get(label)
+        comparison = f'<div class="eph-metric-comparison">{html.escape(delta)}</div>' if delta else ''
+        cards.append('<div class="eph-metric"><div class="eph-metric-top"><span class="eph-metric-icon">'+icon(glyph)+'</span><span class="eph-metric-label">'+html.escape(title)+'</span></div><div class="eph-metric-value">'+html.escape(str(value))+'</div><div class="eph-metric-context">'+html.escape(context.format(price_base=price_base))+'</div>'+comparison+'</div>')
     return '<div class="eph-metrics eph-metrics-'+str(len(cards))+'">'+''.join(cards)+'</div>'

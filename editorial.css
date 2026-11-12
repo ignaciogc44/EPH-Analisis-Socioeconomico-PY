@@ -36,6 +36,7 @@ h2{font-size:1.4rem!important}h3{font-size:1.05rem!important;line-height:1.35!im
 .eph-metric-icon .eph-icon{width:16px;height:16px}.eph-metric-label{font-size:11px;font-weight:600;line-height:1.35;color:#4f5b67}
 .eph-metric-value{font-size:29px;font-weight:750;line-height:1.2;letter-spacing:-.035em;margin:7px 0 3px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 .eph-metric-context{font-size:9px;color:var(--muted);line-height:1.45}
+.eph-metric-comparison{margin-top:5px;font-size:11px;font-weight:650;color:#4f5b67;font-variant-numeric:tabular-nums}
 [class*="st-key-panel_"]{background:white;border:1px solid var(--rule);border-radius:8px;padding:14px 16px;gap:8px!important;min-width:0}
 .eph-chart-heading{display:flex;align-items:center;gap:8px;min-width:0}
 .eph-chart-icon{width:28px;height:28px;display:grid;place-items:center;background:#fff8f4;color:var(--accent);border:1px solid #f4ded3;border-radius:6px;flex:none}

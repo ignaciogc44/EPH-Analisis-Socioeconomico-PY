@@ -96,18 +96,29 @@ def figure(rows,kind,**kwargs):
         if trace.name and len(trace.name)>30: trace.name=trace.name[:28]+'…'
     return f
 
-def cards(view,p,h,ref,period):
+def card_values(view,p,h,ref,period):
     rows=[]
     if view in ['Panorama','Mercado de trabajo']:
         values=m.rates(p)
-        rows=[(k,spanish(v,1)+' %') for k,v in values.items() if view!='Panorama' or k!='Sin descuento jubilatorio']
+        rows=[(k,v,'rate') for k,v in values.items() if view!='Panorama' or k!='Sin descuento jubilatorio']
     if view in ['Panorama','Ingresos y distribución']:
         factor=ref['deflators'].get(period)
         if factor:
-            rows += [('Ingreso laboral · asalariados con ingresos','$ '+spanish(m.mean(m.eligible_salary(p),'P21','PONDIIO')/factor)),('IPCF medio entre hogares','$ '+spanish(m.mean(h,'IPCF','PONDIH')/factor))]
+            rows += [('Ingreso laboral · asalariados con ingresos',m.mean(m.eligible_salary(p),'P21','PONDIIO')/factor,'money'),('IPCF medio entre hogares',m.mean(h,'IPCF','PONDIH')/factor,'money')]
     if view=='Panorama':
-        a=p.loc[p.CH06.ge(18)];rows += [('Secundaria finalizada · 18+',spanish(m.share(a,a.NIVEL_ED.isin([4,5,6])),1)+' %')]
+        a=p.loc[p.CH06.ge(18)];rows += [('Secundaria finalizada · 18+',m.share(a,a.NIVEL_ED.isin([4,5,6])), 'rate')]
     return rows
+
+
+def format_card(value, unit):
+    if pd.isna(value):
+        return 'Sin datos'
+    return '$ '+spanish(value) if unit=='money' else spanish(value,1)+' %'
+
+
+def cards(view,p,h,ref,period):
+    return [(label,format_card(value,unit)) for label,value,unit in card_values(view,p,h,ref,period)]
+
 
 def build(view,p,h,history,ref,period,unit='Personas',territory='Región',sectors=None,population=None):
     specs=[]
