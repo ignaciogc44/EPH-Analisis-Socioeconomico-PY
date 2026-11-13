@@ -8,10 +8,6 @@ Tablero interactivo en Python sobre vivienda, educación, mercado de trabajo e i
 
 [Ver las capturas del tablero en PDF](EPH_Capturas_del_tablero.pdf) con resultados y metodología.
 
-![Vista del panorama de la EPH, con indicadores, evolución de las tasas y tablas de datos](panorama.jpg)
-
-*Captura de una versión anterior al ajuste del IPC.*
-
 ## Qué muestra el tablero
 
 - En 2T 2026, la tasa de actividad fue de **48,9 %**, la de empleo de **45,0 %** y la de desocupación de **7,9 %**. [INDEC, mercado de trabajo, cuadro 1.1](https://www.indec.gob.ar/uploads/informesdeprensa/mercado_trabajo_eph_2trim26433FCBC5A8.pdf)
@@ -62,6 +58,6 @@ Fuentes: [mercado de trabajo 2T 2026](https://www.indec.gob.ar/uploads/informesd
 
 `app.py` muestra el tablero; `metrics.py` calcula indicadores; `charts.py` define los gráficos; `formatting.py` prepara las tablas; `ui.py` y `editorial.css` definen el diseño. `sync_sources.py` descarga las bases y `exploracion_eph.py` permite explorar los indicadores por celdas. La configuración de Streamlit, las referencias, las dependencias y este README completan el proyecto.
 
-El repositorio incluye el código, las referencias y una captura del panorama. Las estimaciones se verificaron en los diez trimestres de la cobertura. La revisión de filtros abarcó selecciones representativas.
+El repositorio incluye el código, las referencias y el PDF con capturas del tablero. Las estimaciones se verificaron en los diez trimestres de la cobertura. La revisión de filtros abarcó selecciones representativas.
 
 **José Ignacio González Cabañas** · Elaboración propia con datos del INDEC.
