@@ -6,7 +6,7 @@ Tablero interactivo en Python sobre vivienda, educación, mercado de trabajo e i
 
 **Autor:** José Ignacio González Cabañas · Análisis, desarrollo y visualización de datos.
 
-[Ver el PDF del proyecto](EPH_Portafolio.pdf) con capturas reales del tablero, resultados y metodología.
+[Ver las capturas del tablero en PDF](EPH_Capturas_del_tablero.pdf) con resultados y metodología.
 
 ![Vista del panorama de la EPH, con indicadores, evolución de las tasas y tablas de datos](panorama.jpg)
 
